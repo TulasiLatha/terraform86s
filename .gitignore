@@ -1,0 +1,11 @@
+# Terraform generated files and directories
+.terraform/
+.terraform.lock.hcl # Include this if you want to ensure consistent provider versions across environments
+*.tfstate
+*.tfstate.*.backup
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+plan.out
+crash.log
