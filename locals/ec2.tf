@@ -1,18 +1,12 @@
 resource "aws_instance" "terraform" {
-    #count=4
-    count= length(var.instances)
-    ami = "ami-09c813fb71547fc4f"
-    instance_type = "t3.micro"
+    ami = local.ami_id
+    instance_type = local.instance_type
     vpc_security_group_ids = [aws_security_group.allow_all.id]
-    tags = {
-        Name = var.instances[count.index]
-        Terraform = "true"
-        Project = "roboshop"
-    }
+    tags = local.ec2_tags
 }
 
 resource "aws_security_group" "allow_all" {
-  name   = "allow-all"
+  name   = "${local.common_name}-allow-all"
 
   egress {
     from_port        = 0 # from port 0 to to port 0 means all ports
@@ -28,8 +22,11 @@ resource "aws_security_group" "allow_all" {
     cidr_blocks      = ["0.0.0.0/0"] # internet
   }
 
-  tags = {
-    Name = "allow-all"
-  }
+  tags = merge(
+    var.common_tags,
+    {
+      Name = "${local.common_name}-allow-all"
+    }
+  ) 
 
 }
